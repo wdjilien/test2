@@ -10,30 +10,34 @@
 		<link rel="stylesheet" href="css/app.css">
 	</head>
 	<body ng-app="app">
-		<section class="todoapp">
+		<section class="todoapp" ng-controller="ctrl">
 			<header class="header">
 				<h1>todos</h1>
-				<input class="new-todo" placeholder="What needs to be done?" autofocus>
+				<form ng-submit="add()">
+					<input class="new-todo" placeholder="What needs to be done?" autofocus ng-model="text">
+				</form>
 			</header>
 			<section class="main">
 				<input class="toggle-all" type="checkbox">
 				<label for="toggle-all">Mark all as complete</label>
 				<ul class="todo-list">
+				<!-- ng-repeat 遍历时，数组中有重复元素会报错 -->
+				<!-- 添加track by $ndex 就可以避免 -->
+					<li ng-repeat="msg in unfinish track by $index">
+						<div class="view">
+							<input class="toggle" type="checkbox">
+							<label>{{msg}}</label>
+							<button class="destroy"></button>
+						</div>
+						<input class="edit" value="Rule the web">
+					</li>
 					<li class="completed">
 						<div class="view">
-							<input class="toggle" type="checkbox" checked>
+							<input class="toggle" type="checkbox" ng-click="danji()">
 							<label>Taste JavaScript</label>
 							<button class="destroy"></button>
 						</div>
 						<input class="edit" value="Create a TodoMVC template">
-					</li>
-					<li>
-						<div class="view">
-							<input class="toggle" type="checkbox">
-							<label>Buy a unicorn</label>
-							<button class="destroy"></button>
-						</div>
-						<input class="edit" value="Rule the web">
 					</li>
 				</ul>
 			</section>
@@ -55,7 +59,20 @@
 	<script type="text/javascript">
 		var app = angular.module("app",[]);
 		app.controller("ctrl",["$scope",function($scope){
+			//声明一个数组保存未完成的事件
+			$scope.unfinish = [];
+			$scope.finish = [];
+			$scope.add = function(){
+				//alert($scope.text)
+				//按一次回车那就将内容放入到未完成事件中
+				$scope.unfinish.push($scope.text);
+				$scope.text = "";
 
+			};
+			$scope.danji = function(){
+
+			}
+			
 		}]);
 
 	</script>
